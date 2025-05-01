@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace MyAppName.WebApp.Features.Account
+namespace MyAppName.WebApp.Features.Account;
+
+public class ApplicationUser : IdentityUser
 {
-    public class ApplicationUser : IdentityUser
-    {
-    }
 }

@@ -8,9 +8,18 @@
             </MudButton> *@
         </MudStack>
         <MudStack Row AlignItems=AlignItems.Center>
-            <MudButton Class="!text-white whitespace-nowrap" Href="/Account/Login">
-                Sign In
-            </MudButton>
+            <AuthorizeView>
+                <Authorized>
+                    <MudButton Class="!text-white !whitespace-nowrap" Href="/Account/Logout">
+                        Sign Out
+                    </MudButton>
+                </Authorized>
+                <NotAuthorized>
+                    <MudButton Class="!text-white !whitespace-nowrap" Href="/Account/Login">
+                        Sign In
+                    </MudButton>
+                </NotAuthorized>
+            </AuthorizeView>
         </MudStack>
     </MudStack>
 </MudAppBar>
