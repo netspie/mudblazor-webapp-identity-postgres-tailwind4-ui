@@ -1,10 +1,10 @@
-using MyAppName.WebApp.Components;
-using MyAppName.WebApp.Components.Account;
-using MyAppName.WebApp.Data;
+using MyAppName.WebApp.Features;
+using MyAppName.WebApp.Features.Account;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using MyAppName.WebApp.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
