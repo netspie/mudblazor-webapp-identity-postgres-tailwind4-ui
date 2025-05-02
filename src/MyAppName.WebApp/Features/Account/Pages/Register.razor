@@ -5,6 +5,7 @@
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
+@using MudBlazor.StaticInput
 
 
 @inject UserManager<ApplicationUser> UserManager
@@ -17,45 +18,33 @@
 
 <PageTitle>Register</PageTitle>
 
-<h1>Register</h1>
-
-<div class="row">
-    <div class="col-lg-6">
+<SpyPageContent class="gap-8">
+    <MudText Typo="@Typo.h3" Class="!font-bold">Register</MudText>
+    <div class="text-red-500 text-sm">
         <StatusMessage Message="@Message" />
-        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
-            <DataAnnotationsValidator />
-            <h2>Create a new account.</h2>
-            <hr />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label for="Input.Email">Email</label>
-                <ValidationMessage For="() => Input.Email" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="Input.Password">Password</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="Input.ConfirmPassword">Confirm Password</label>
-                <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </EditForm>
     </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
-    </div>
-</div>
+    <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register" Class="gap-4 flex w-full max-w-[400px] flex-col sm:w-[400px]">
+        <DataAnnotationsValidator />
+        <MudStack>
+            <MudStaticTextField Label="Email" InputType="@InputType.Email" @bind-Value="Input.Email" ShrinkLabel Required />
+            <ValidationMessage For="() => Input.Email" class="text-sm text-red-500" />
+
+            <MudStaticTextField Label="Password" InputType="@InputType.Password" @bind-Value="Input.Password" ShrinkLabel Required />
+            <ValidationMessage For="() => Input.Password" class="text-sm text-red-500" />
+
+            <MudStaticTextField Label="Confirm Password" InputType="@InputType.Password" @bind-Value="Input.ConfirmPassword" ShrinkLabel Required />
+            <ValidationMessage For="() => Input.ConfirmPassword" class="text-sm text-red-500" />
+
+            <MudStaticButton FormAction="FormAction.Submit" Variant="Variant.Filled" Color="Color.Primary">Register</MudStaticButton>
+        </MudStack>
+    </EditForm>
+</SpyPageContent>
 
 @code {
     private IEnumerable<IdentityError>? identityErrors;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
@@ -64,6 +53,12 @@
     private string? ReturnUrl { get; set; }
 
     private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
+
+    protected override void OnInitialized()
+    {
+        if (HttpContext.User.Identity?.IsAuthenticated is true)
+            RedirectManager.RedirectTo("");
+    }
 
     public async Task RegisterUser(EditContext editContext)
     {

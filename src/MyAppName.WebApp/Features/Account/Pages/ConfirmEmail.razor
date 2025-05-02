@@ -4,14 +4,15 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 
-
 @inject UserManager<ApplicationUser> UserManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Confirm email</PageTitle>
+<PageTitle>Registered Successfully</PageTitle>
 
-<h1>Confirm email</h1>
-<StatusMessage Message="@statusMessage" />
+<SpyPageContent class="gap-8">
+    <MudText Typo="@Typo.h3" Class="!font-bold">Registered Successfully</MudText>
+    <StatusMessage Message="@statusMessage" />
+</SpyPageContent>
 
 @code {
     private string? statusMessage;
@@ -42,7 +43,7 @@
         {
             var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(Code));
             var result = await UserManager.ConfirmEmailAsync(user, code);
-            statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            statusMessage = result.Succeeded ? "Thank you for registering. Please sign in now." : "Error confirming your email.";
         }
     }
 }

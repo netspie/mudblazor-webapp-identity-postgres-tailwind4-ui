@@ -14,18 +14,25 @@
 
 <SpyPageContent class="gap-8">
     <MudText Typo="@Typo.h3" Class="!font-bold">Sign In</MudText>
-    <StatusMessage Message="@errorMessage" />
+    <div class="text-red-500 text-sm">
+        <StatusMessage Message="@errorMessage" />
+    </div>
     <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login" Class="gap-4 flex w-full max-w-[400px] flex-col sm:w-[400px]">
         <DataAnnotationsValidator />
         <MudStack>
             <MudStaticTextField Label="Email" InputType="@InputType.Email" @bind-Value="Input.Email" ShrinkLabel Required />
+            <ValidationMessage For="() => Input.Email" class="text-sm text-red-500" />
+
             <MudStaticTextField Label="Password" InputType="@InputType.Password" @bind-Value="Input.Password" ShrinkLabel Required />
+            <ValidationMessage For="() => Input.Password" class="text-sm text-red-500" />
+
             <MudStaticSwitch Label="Remember me" @bind-Value="Input.RememberMe" Color="Color.Primary" />
+
             <MudStaticButton FormAction="FormAction.Submit" Variant="Variant.Filled" Color="Color.Primary">Sign In</MudStaticButton>
         </MudStack>
         <MudStack>
-            @* <MudLink Class="text-center" Href="Account/ForgotPassword">Forgot your password?</MudLink>
             <MudLink Class="text-center" Href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</MudLink>
+            @* <MudLink Class="text-center" Href="Account/ForgotPassword">Forgot your password?</MudLink>
             <MudLink Class="text-center" Href="Account/ResendEmailConfirmation">Resend email confirmation</MudLink> *@
         </MudStack>
     </EditForm>
